@@ -2,6 +2,7 @@
 # vim: ft=yaml
 letsencrypt:
   use_package: true
+  standalone: false
   pkgs:
     - python-certbot-apache
   service: certbot.timer

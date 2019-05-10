@@ -4,21 +4,26 @@
 {% from "letsencrypt/map.jinja" import letsencrypt with context %}
 
 {% if letsencrypt.use_package %}
-  # Renew checks if the cert exists and needs to be renewed
+  {% if letsencryt.standalone %}
+    # Renew checks if the cert exists and needs to be renewed
+    {% set renew_cert_cmd = '/usr/bin/certbot renew --standalone' %}
+    {% set create_cert_cmd = '/usr/bin/certbot --standalone' %}
+  {% else %}
+    # Renew checks if the cert exists and needs to be renewed
+    {% set renew_cert_cmd = '/usr/bin/certbot renew' %}
+    {% set create_cert_cmd = '/usr/bin/certbot' %}
+  {% endif %}
   {% set check_cert_cmd = '/usr/bin/certbot renew --dry-run --cert-name' %}
-  {% set renew_cert_cmd = '/usr/bin/certbot renew' %}
   {% set old_check_cert_cmd_state = 'absent' %}
   {% set old_renew_cert_cmd_state = 'absent' %}
   {% set old_cron_state = 'absent' %}
-  {% set create_cert_cmd = '/usr/bin/certbot' %}
-
 {% else %}
   {% set check_cert_cmd = '/usr/local/bin/check_letsencrypt_cert.sh' %}
   {% set renew_cert_cmd = '/usr/local/bin/renew_letsencrypt_cert.sh' %}
+  {% set create_cert_cmd = letsencrypt.cli_install_dir ~ '/letsencrypt-auto' %}
   {% set old_check_cert_cmd_state = 'managed' %}
   {% set old_renew_cert_cmd_state = 'managed' %}
   {% set old_cron_state = 'present' %}
-  {% set create_cert_cmd = letsencrypt.cli_install_dir ~ '/letsencrypt-auto' %}
 {% endif %}
 
 {{ check_cert_cmd }}:
