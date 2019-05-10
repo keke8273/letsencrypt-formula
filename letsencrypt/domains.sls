@@ -4,7 +4,7 @@
 {% from "letsencrypt/map.jinja" import letsencrypt with context %}
 
 {% if letsencrypt.use_package %}
-  {% if letsencryt.standalone %}
+  {% if letsencrypt.standalone %}
     # Renew checks if the cert exists and needs to be renewed
     {% set renew_cert_cmd = '/usr/bin/certbot renew --standalone' %}
     {% set create_cert_cmd = '/usr/bin/certbot --standalone' %}
