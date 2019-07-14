@@ -62,9 +62,10 @@ create-initial-cert-{{ setname }}-{{ domainlist | join('+') }}:
 letsencrypt-crontab-{{ setname }}-{{ domainlist[0] }}:
   cron.{{ old_cron_state }}:
     - name: {{ renew_cert_cmd }} {{ domainlist|join(' ') }}
-    - month: '*'
     - minute: '{{ letsencrypt.cron.minute }}'
     - hour: '{{ letsencrypt.cron.hour }}'
+    - daymonth: '{{ letsencrypt.cron.daymonth }}'
+    - month: '{{ letsencrypt.cron.month}}'
     - dayweek: '{{ letsencrypt.cron.dayweek }}'
     - identifier: letsencrypt-{{ setname }}-{{ domainlist[0] }}
     - require:
